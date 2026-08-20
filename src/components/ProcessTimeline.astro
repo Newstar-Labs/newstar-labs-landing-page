@@ -1,0 +1,519 @@
+---
+import { processSteps } from '../data/process';
+---
+
+<section id="proceso" class="ns-proc">
+  <div class="ns-proc-eyebrow">
+    <span class="ns-dot"></span>
+    <span class="ns-eyebrow-text">Cómo trabajamos</span>
+  </div>
+  <h2 class="ns-proc-title">Un proceso simple, pensado contigo.</h2>
+
+  <div class="ns-steps-wrap">
+    <div class="ns-steps" id="ns-steps">
+      <span class="ns-rail ns-rail-track" aria-hidden="true"></span>
+      <span class="ns-rail ns-rail-fill" id="ns-rail-fill" aria-hidden="true"></span>
+      {
+        processSteps.map((step, i) => (
+          <div class="ns-step" data-step={i + 1}>
+            <div class="ns-step-rowhead">
+              <span class="ns-node" data-node />
+              <span class="ns-step-seg" data-seg />
+            </div>
+            <div class={`ns-step-card ${i === processSteps.length - 1 ? 'ns-step-card--last' : ''}`}>
+              <span class="ns-step-num" data-num>
+                {step.number}
+              </span>
+              <h3>{step.title}</h3>
+              <p>{step.description}</p>
+              {step.label && <div class="ns-step-label">{step.label}</div>}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  const wrap = document.getElementById('ns-steps');
+  if (wrap) {
+    const stepEls = Array.from(wrap.querySelectorAll<HTMLElement>('.ns-step')).sort(
+      (a, b) => Number(a.dataset.step) - Number(b.dataset.step),
+    );
+    const railFill = document.getElementById('ns-rail-fill');
+    const total = stepEls.length;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let hoverStep = 0;
+    let scrollStep = 0;
+    let railHeight = 0;
+    let rafId = 0;
+
+    const render = () => {
+      const active = hoverStep || scrollStep;
+
+      stepEls.forEach((el, idx) => {
+        const i = idx + 1;
+        const isLast = i === total;
+        const node = el.querySelector<HTMLElement>('[data-node]');
+        const seg = el.querySelector<HTMLElement>('[data-seg]');
+        const num = el.querySelector<HTMLElement>('[data-num]');
+
+        let nodeColor = 'rgba(var(--color-text-primary-rgb), 0.16)';
+        let ring = 'none';
+        let numColor = 'rgba(var(--color-text-primary-rgb), 0.35)';
+
+        if (active) {
+          if (i === active) {
+            nodeColor = isLast ? 'var(--color-emerald)' : 'var(--color-violet)';
+            const ringColor = isLast ? 'var(--color-emerald-rgb)' : 'var(--color-violet-rgb)';
+            ring = `0 0 0 4px rgba(${ringColor}, 0.1), 0 0 10px rgba(${ringColor}, 0.45)`;
+            numColor = nodeColor;
+          } else if (i < active) {
+            nodeColor = 'rgba(var(--color-violet-rgb), 0.5)';
+            numColor = 'rgba(var(--color-violet-rgb), 0.55)';
+          }
+        }
+
+        let segColor = 'var(--color-violet-rgb)';
+        let segOpacity = 0.22;
+        if (active && i < active) {
+          segOpacity = i === active - 1 ? 0.8 : 0.42;
+          if (active === total && i === total - 1) segColor = 'var(--color-emerald-rgb)';
+        }
+
+        if (node) {
+          node.style.background = nodeColor;
+          node.style.boxShadow = ring;
+        }
+        if (num) {
+          num.style.color = numColor;
+        }
+        if (seg) {
+          seg.style.backgroundImage = `linear-gradient(90deg, rgba(${segColor},1) 0 5px, rgba(0,0,0,0) 5px 12px)`;
+          seg.style.opacity = isLast ? '0' : String(segOpacity);
+        }
+
+        el.classList.toggle('ns-step-on', scrollStep === i);
+        el.classList.toggle('ns-step-done', !!scrollStep && i < scrollStep);
+      });
+
+      if (railFill) {
+        const railGreen = scrollStep === total;
+        railFill.style.height = `${railHeight}px`;
+        railFill.style.background = railGreen
+          ? 'linear-gradient(180deg, var(--color-violet), var(--color-emerald))'
+          : 'var(--color-violet)';
+        railFill.style.display = railHeight ? 'block' : 'none';
+      }
+    };
+
+    stepEls.forEach((el, idx) => {
+      el.addEventListener('mouseenter', () => {
+        hoverStep = idx + 1;
+        render();
+      });
+      el.addEventListener('mouseleave', () => {
+        hoverStep = 0;
+        render();
+      });
+    });
+
+    const computeScroll = () => {
+      rafId = 0;
+      if (window.innerWidth >= 1024) {
+        if (scrollStep || railHeight) {
+          scrollStep = 0;
+          railHeight = 0;
+          render();
+        }
+        return;
+      }
+
+      const mid = window.innerHeight * 0.55;
+      let active = 0;
+      stepEls.forEach((el, idx) => {
+        const r = el.getBoundingClientRect();
+        if (r.top <= mid && r.bottom > 0) active = idx + 1;
+      });
+
+      let newRailHeight = 0;
+      if (active) {
+        const a = stepEls[0].querySelector<HTMLElement>('[data-node]');
+        const b = stepEls[active - 1].querySelector<HTMLElement>('[data-node]');
+        if (a && b) {
+          const ra = a.getBoundingClientRect();
+          const rb = b.getBoundingClientRect();
+          newRailHeight = Math.max(0, rb.top + rb.height / 2 - (ra.top + ra.height / 2));
+        }
+      }
+
+      if (active !== scrollStep || Math.abs(newRailHeight - railHeight) > 1) {
+        scrollStep = active;
+        railHeight = newRailHeight;
+        render();
+      }
+    };
+
+    const queueCompute = () => {
+      if (!rafId) rafId = requestAnimationFrame(computeScroll);
+    };
+
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(queueCompute, {
+        rootMargin: '-45% 0px -45% 0px',
+        threshold: [0, 0.35, 0.65, 1],
+      });
+      stepEls.forEach((el) => io.observe(el));
+    }
+
+    document.addEventListener('scroll', queueCompute, { passive: true, capture: true });
+    window.addEventListener('resize', queueCompute, { passive: true });
+
+    if (!reduceMotion) computeScroll();
+    render();
+  }
+</script>
+
+<style>
+  .ns-proc {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    padding: 104px 24px;
+    border-top: 1px solid rgba(var(--color-text-primary-rgb), 0.08);
+  }
+
+  .ns-proc-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .ns-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--color-emerald);
+  }
+
+  .ns-eyebrow-text {
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(var(--color-text-primary-rgb), 0.5);
+  }
+
+  .ns-proc-title {
+    font-family: var(--font-display);
+    font-size: clamp(29px, 4.6vw, 44px);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin: 20px 0 0;
+    max-width: 30rem;
+  }
+
+  .ns-steps-wrap {
+    position: relative;
+    margin-top: 56px;
+  }
+
+  .ns-steps {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+    align-items: stretch;
+  }
+
+  .ns-rail {
+    display: none;
+    position: absolute;
+    left: 4px;
+    top: 26px;
+    bottom: 26px;
+    width: 2px;
+  }
+
+  .ns-rail-track {
+    background-image: linear-gradient(180deg, rgba(var(--color-violet-rgb), 1) 0 5px, rgba(0, 0, 0, 0) 5px 12px);
+    background-size: 2px 12px;
+    background-repeat: repeat-y;
+    opacity: 0.22;
+  }
+
+  .ns-rail-fill {
+    bottom: auto;
+    border-radius: 2px;
+    opacity: 0.85;
+    transition: height 0.45s ease-out, background 0.45s ease-out;
+  }
+
+  .ns-step {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    min-width: 0;
+  }
+
+  .ns-step-rowhead {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 10px;
+    margin-bottom: 16px;
+    padding: 0 2px;
+  }
+
+  .ns-node {
+    width: 9px;
+    height: 9px;
+    border-radius: 999px;
+    flex: none;
+    background: rgba(var(--color-text-primary-rgb), 0.16);
+    transition: background 0.4s ease-out, box-shadow 0.4s ease-out;
+  }
+
+  .ns-step-seg {
+    flex: 1;
+    height: 1px;
+    background-size: 12px 1px;
+    background-repeat: repeat-x;
+    opacity: 0.22;
+    transition: opacity 0.45s ease-out;
+  }
+
+  .ns-step-card {
+    background: rgba(var(--color-text-primary-rgb), 0.025);
+    box-shadow: inset 0 1px 1px rgba(var(--color-text-primary-rgb), 0.08);
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    padding: 20px;
+    flex: 1;
+    transition: box-shadow 0.4s ease-out;
+  }
+
+  .ns-step-card:hover {
+    box-shadow:
+      inset 0 1px 1px rgba(var(--color-text-primary-rgb), 0.14),
+      0 0 0 1px rgba(var(--color-violet-rgb), 0.24),
+      0 0 24px rgba(var(--color-violet-rgb), 0.09);
+  }
+
+  .ns-step-card--last {
+    border: 2px solid rgba(var(--color-emerald-rgb), 0);
+    padding: 19px;
+    transition: box-shadow 0.4s ease-out, border-color 0.4s ease-out;
+  }
+
+  .ns-step-card--last:hover {
+    border-color: var(--color-emerald);
+    box-shadow:
+      inset 0 1px 1px rgba(var(--color-text-primary-rgb), 0.08),
+      0 0 0 1px rgba(var(--color-emerald-rgb), 0.22),
+      0 0 15px rgba(var(--color-emerald-rgb), 0.07);
+  }
+
+  .ns-step-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: rgba(var(--color-text-primary-rgb), 0.35);
+    transition: color 0.4s ease-out;
+  }
+
+  .ns-step-card h3 {
+    margin: 12px 0 0;
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .ns-step-card p {
+    margin: 8px 0 0;
+    font-size: 13px;
+    line-height: 1.55;
+    color: rgba(var(--color-text-primary-rgb), 0.5);
+  }
+
+  .ns-step-label {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-emerald);
+    opacity: 0.8;
+    margin-top: 14px;
+  }
+
+  @media (max-width: 1100px) {
+    .ns-timeline-line {
+      display: none;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .ns-steps {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 24px;
+      padding-left: 36px;
+    }
+
+    .ns-rail {
+      display: block;
+    }
+
+    .ns-step > .ns-step-rowhead {
+      position: absolute;
+      left: -36px;
+      top: 28px;
+      height: 9px;
+      margin: 0;
+      padding: 0;
+      width: 9px;
+    }
+
+    .ns-step-seg {
+      display: none;
+    }
+
+    .ns-step-card {
+      padding: 26px;
+      border-radius: 16px;
+      width: 100%;
+      height: auto;
+    }
+
+    .ns-step-card h3 {
+      font-size: 22px;
+    }
+
+    .ns-step-card p {
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .ns-step-done > .ns-step-card {
+      box-shadow: inset 0 1px 1px rgba(var(--color-text-primary-rgb), 0.1), 0 0 0 1px rgba(var(--color-violet-rgb), 0.16);
+    }
+
+    .ns-step-on > .ns-step-card {
+      background: rgba(var(--color-text-primary-rgb), 0.045);
+      box-shadow:
+        inset 0 1px 1px rgba(var(--color-text-primary-rgb), 0.14),
+        0 0 0 1px rgba(var(--color-violet-rgb), 0.45),
+        0 0 22px rgba(var(--color-violet-rgb), 0.1);
+    }
+
+    .ns-step[data-step='5'].ns-step-on > .ns-step-card {
+      border-color: var(--color-emerald);
+      box-shadow:
+        inset 0 1px 1px rgba(var(--color-text-primary-rgb), 0.12),
+        0 0 0 1px rgba(var(--color-emerald-rgb), 0.35),
+        0 0 20px rgba(var(--color-emerald-rgb), 0.1);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .ns-proc {
+      overflow: clip;
+      width: 100%;
+      max-width: 100%;
+      padding-top: clamp(72px, 18vw, 88px);
+      padding-bottom: clamp(72px, 18vw, 88px);
+      padding-left: max(24px, env(safe-area-inset-left));
+      padding-right: max(24px, env(safe-area-inset-right));
+    }
+
+    .ns-proc-title {
+      font-size: clamp(38px, 10.5vw, 44px);
+      line-height: 1.08;
+      letter-spacing: -0.032em;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .ns-steps {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 22px;
+      padding-left: 32px;
+    }
+
+    .ns-rail {
+      display: block;
+    }
+
+    .ns-step > .ns-step-rowhead {
+      position: absolute;
+      left: -32px;
+      top: 26px;
+      height: 9px;
+      margin: 0;
+      padding: 0;
+      width: 9px;
+    }
+
+    .ns-step-seg {
+      display: none;
+    }
+
+    .ns-step-card {
+      padding: 22px;
+      border-radius: 14px;
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .ns-step-num {
+      font-size: 12.5px;
+    }
+
+    .ns-step-card h3 {
+      font-size: 22px;
+      margin-top: 10px;
+      line-height: 1.2;
+    }
+
+    .ns-step-card p {
+      font-size: 16px;
+      line-height: 1.5;
+      margin-top: 10px;
+      color: rgba(var(--color-text-primary-rgb), 0.58);
+    }
+
+    .ns-step-label {
+      font-size: 10.5px;
+    }
+
+    .ns-step-done > .ns-step-card {
+      box-shadow: inset 0 1px 1px rgba(var(--color-text-primary-rgb), 0.1), 0 0 0 1px rgba(var(--color-violet-rgb), 0.16);
+    }
+
+    .ns-step-on > .ns-step-card {
+      background: rgba(var(--color-text-primary-rgb), 0.045);
+      box-shadow:
+        inset 0 1px 1px rgba(var(--color-text-primary-rgb), 0.14),
+        0 0 0 1px rgba(var(--color-violet-rgb), 0.45),
+        0 0 22px rgba(var(--color-violet-rgb), 0.1);
+    }
+
+    .ns-step-on > .ns-step-card h3 {
+      color: var(--color-text-primary);
+    }
+
+    .ns-step-on > .ns-step-card p {
+      color: rgba(var(--color-text-primary-rgb), 0.74);
+    }
+
+    .ns-step[data-step='5'].ns-step-on > .ns-step-card {
+      border-color: var(--color-emerald);
+      box-shadow:
+        inset 0 1px 1px rgba(var(--color-text-primary-rgb), 0.12),
+        0 0 0 1px rgba(var(--color-emerald-rgb), 0.35),
+        0 0 20px rgba(var(--color-emerald-rgb), 0.1);
+    }
+  }
+</style>

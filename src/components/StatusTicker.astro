@@ -1,0 +1,96 @@
+---
+const items = ['Automatización', 'Integraciones', 'Paneles de control', 'Procesos claros'];
+---
+
+<div class="ns-ticker" role="presentation">
+  <div class="ns-ticker-inner">
+    <div class="ns-ticker-status">
+      <span class="ns-ticker-pulse" aria-hidden="true"></span>
+      <span>Sistema en línea</span>
+    </div>
+    <div class="ns-ticker-track">
+      <div class="ns-ticker-marquee" data-pause-offscreen>
+        {
+          [...items, ...items].map((item, i) => (
+            <>
+              <span>{item}</span>
+              {i < items.length * 2 - 1 && <span aria-hidden="true">·</span>}
+            </>
+          ))
+        }
+      </div>
+    </div>
+    <span class="ns-ticker-ver">v.2026</span>
+  </div>
+</div>
+
+<style>
+  .ns-ticker {
+    height: 40px;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(var(--color-text-primary-rgb), 0.1);
+    border-bottom: 1px solid rgba(var(--color-text-primary-rgb), 0.1);
+    overflow: hidden;
+  }
+
+  .ns-ticker-inner {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: rgba(var(--color-text-primary-rgb), 0.4);
+  }
+
+  .ns-ticker-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: none;
+  }
+
+  .ns-ticker-pulse {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--color-emerald);
+    animation: ns-breathe 3s ease-in-out infinite;
+  }
+
+  .ns-ticker-track {
+    overflow: hidden;
+    flex: 1;
+    mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  }
+
+  .ns-ticker-marquee {
+    display: flex;
+    gap: 40px;
+    width: max-content;
+    animation: ns-marquee 38s linear infinite;
+    will-change: transform;
+    padding-left: 40px;
+  }
+
+  .ns-ticker-ver {
+    flex: none;
+  }
+
+  @media (max-width: 767px) {
+    .ns-ticker-inner {
+      padding-left: max(24px, env(safe-area-inset-left));
+      padding-right: max(24px, env(safe-area-inset-right));
+      gap: 14px;
+    }
+
+    .ns-ticker-status span:last-child {
+      white-space: nowrap;
+    }
+  }
+</style>

@@ -1,0 +1,394 @@
+---
+import { differentiators } from '../data/differentiators';
+
+const icons: Record<(typeof differentiators)[number]['icon'], string> = {
+  file: '<path d="M4 19V7a2 2 0 0 1 2-2h8l6 6v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2Z"></path><path d="M14 5v6h6"></path>',
+  layers: '<path d="m12 3 8 4.5-8 4.5-8-4.5L12 3Z"></path><path d="m4 12 8 4.5 8-4.5"></path><path d="m4 16.5 8 4.5 8-4.5"></path>',
+  check: '<circle cx="12" cy="12" r="9"></circle><path d="m8 12.5 2.6 2.6L16 9.5"></path>',
+  gear: '<path d="M12 4v4"></path><path d="M12 16v4"></path><path d="M4 12h4"></path><path d="M16 12h4"></path><circle cx="12" cy="12" r="3"></circle>',
+};
+---
+
+<section id="porque" class="ns-porque">
+  <div class="ns-porque-eyebrow">
+    <span class="ns-dot"></span>
+    <span class="ns-eyebrow-text">NUESTRA DIFERENCIA</span>
+  </div>
+  <h2 class="ns-porque-title">Por qué Newstar Labs.</h2>
+
+  <div class="ns-acc-wrap" id="ns-accordion">
+    {
+      differentiators.map((item, i) => (
+        <div class="ns-acc-item" data-open={i === 0 ? 'true' : 'false'}>
+          <h3 class="ns-acc-heading">
+            <button
+              type="button"
+              class="ns-acc-head"
+              id={`ns-acc-btn-${item.id}`}
+              aria-expanded={i === 0 ? 'true' : 'false'}
+              aria-controls={`ns-acc-panel-${item.id}`}
+              aria-label={item.title}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="ns-acc-icon" set:html={icons[item.icon]} />
+              <span class="ns-acc-title">{item.title}</span>
+              <span class="ns-acc-btn" aria-hidden="true" />
+            </button>
+          </h3>
+          <div id={`ns-acc-panel-${item.id}`} class="ns-acc-panel" role="region" aria-labelledby={`ns-acc-btn-${item.id}`}>
+            <div class="ns-acc-panel-inner">
+              <div class="ns-acc-body">
+                <p class="ns-acc-p">{item.description}</p>
+                <div class="ns-acc-lab">{item.chipsLabel}</div>
+                <div class="ns-acc-chips">
+                  {item.chips.map((chip) => <span>{chip}</span>)}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<script>
+  const accordion = document.getElementById('ns-accordion');
+  if (accordion) {
+    const items = Array.from(accordion.querySelectorAll<HTMLElement>('.ns-acc-item'));
+
+    items.forEach((item) => {
+      const button = item.querySelector<HTMLButtonElement>('.ns-acc-head');
+      button?.addEventListener('click', () => {
+        const willOpen = item.dataset.open !== 'true';
+        items.forEach((other) => {
+          const otherButton = other.querySelector<HTMLButtonElement>('.ns-acc-head');
+          const shouldOpen = other === item && willOpen;
+          other.dataset.open = String(shouldOpen);
+          otherButton?.setAttribute('aria-expanded', String(shouldOpen));
+        });
+      });
+    });
+  }
+</script>
+
+<style>
+  .ns-porque {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    padding: 104px 24px;
+  }
+
+  .ns-porque-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .ns-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--color-emerald);
+  }
+
+  .ns-eyebrow-text {
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(var(--color-text-primary-rgb), 0.5);
+  }
+
+  .ns-porque-title {
+    font-family: var(--font-display);
+    font-size: clamp(29px, 4.6vw, 44px);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin: 20px 0 0;
+    max-width: 28rem;
+  }
+
+  .ns-acc-wrap {
+    margin-top: 48px;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .ns-acc-item {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .ns-acc-heading {
+    margin: 0;
+    font: inherit;
+  }
+
+  .ns-acc-head {
+    width: 100%;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 24px 4px;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    text-align: left;
+    color: rgba(var(--color-text-primary-rgb), 0.4);
+    font: inherit;
+    transition: color 0.3s ease-out;
+  }
+
+  .ns-acc-head:hover {
+    color: var(--color-violet);
+  }
+
+  .ns-acc-icon {
+    flex: none;
+    opacity: 0.8;
+    color: inherit;
+    transition: color 0.3s ease-out, opacity 0.3s ease-out;
+  }
+
+  .ns-acc-item[data-open='true'] .ns-acc-icon {
+    color: var(--color-violet);
+    opacity: 1;
+  }
+
+  .ns-acc-title {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(16px, 1.6vw, 19px);
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--color-text-primary);
+    letter-spacing: -0.01em;
+  }
+
+  .ns-acc-btn {
+    flex: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    line-height: 1;
+    border: 1px solid var(--color-border);
+    color: inherit;
+    background: transparent;
+    transition: color 0.3s ease-out, border-color 0.3s ease-out, background 0.3s ease-out;
+  }
+
+  .ns-acc-btn::before {
+    content: '+';
+  }
+
+  .ns-acc-item[data-open='true'] .ns-acc-btn {
+    border-color: var(--color-violet);
+    color: var(--color-violet);
+    background: rgba(var(--color-violet-rgb), 0.08);
+  }
+
+  .ns-acc-item[data-open='true'] .ns-acc-btn::before {
+    content: '\2212';
+  }
+
+  .ns-acc-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition: grid-template-rows 0.32s ease-out, opacity 0.26s ease-out;
+  }
+
+  .ns-acc-item[data-open='true'] .ns-acc-panel {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+
+  .ns-acc-panel-inner {
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  .ns-acc-body {
+    padding: 0 4px 28px 58px;
+  }
+
+  .ns-acc-p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+    max-width: 44rem;
+  }
+
+  .ns-acc-lab {
+    margin-top: 22px;
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-violet);
+    opacity: 0.8;
+  }
+
+  .ns-acc-chips {
+    margin-top: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .ns-acc-chips span {
+    border: 1px solid var(--color-border);
+    background: rgba(var(--color-text-primary-rgb), 0.02);
+    border-radius: 999px;
+    padding: 7px 14px;
+    font-size: 12.5px;
+    color: var(--color-text-secondary);
+  }
+
+  .ns-acc-head:focus-visible {
+    outline: 2px solid var(--color-violet);
+    outline-offset: -2px;
+    border-radius: 10px;
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .ns-porque {
+      padding-top: clamp(96px, 12vw, 120px);
+      padding-left: clamp(32px, 4.6vw, 48px);
+      padding-right: clamp(32px, 4.6vw, 48px);
+    }
+
+    .ns-porque-title {
+      font-size: clamp(44px, 6vw, 52px);
+      line-height: 1.08;
+    }
+
+    .ns-acc-head {
+      display: grid;
+      grid-template-columns: 40px minmax(0, 1fr) 48px;
+      align-items: start;
+      gap: 20px;
+      padding: 28px 0;
+    }
+
+    .ns-acc-head > svg {
+      width: 24px;
+      height: 24px;
+      margin-top: 2px;
+    }
+
+    .ns-acc-title {
+      font-size: 21px;
+    }
+
+    .ns-acc-btn {
+      width: 44px;
+      height: 44px;
+      font-size: 18px;
+      align-self: center;
+    }
+
+    .ns-acc-body {
+      padding: 0 4px 34px 60px;
+    }
+
+    .ns-acc-p {
+      font-size: 17px;
+      line-height: 1.6;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .ns-porque {
+      height: auto;
+      overflow: visible;
+      width: 100%;
+      max-width: 100%;
+      padding-top: clamp(80px, 21vw, 96px);
+      padding-bottom: clamp(72px, 18vw, 88px);
+      padding-left: max(22px, env(safe-area-inset-left));
+      padding-right: max(22px, env(safe-area-inset-right));
+    }
+
+    .ns-porque-title {
+      font-size: clamp(38px, 10.5vw, 44px);
+      line-height: 1.08;
+      letter-spacing: -0.032em;
+      margin-top: 26px;
+      max-width: 100%;
+      text-wrap: balance;
+    }
+
+    .ns-acc-wrap {
+      margin-top: 58px;
+    }
+
+    .ns-acc-head {
+      display: grid;
+      grid-template-columns: 40px minmax(0, 1fr) 48px;
+      align-items: start;
+      gap: 16px;
+      padding: 28px 0;
+    }
+
+    .ns-acc-head > svg {
+      width: 22px;
+      height: 22px;
+      margin-top: 2px;
+    }
+
+    .ns-acc-title {
+      font-size: 19px;
+      line-height: 1.3;
+    }
+
+    .ns-acc-btn {
+      width: 44px;
+      height: 44px;
+      font-size: 18px;
+      align-self: center;
+    }
+
+    .ns-acc-body {
+      padding: 0 0 32px 56px;
+      max-width: 100%;
+    }
+
+    .ns-acc-p {
+      font-size: 16px;
+      line-height: 1.58;
+      max-width: 100%;
+    }
+
+    .ns-acc-lab {
+      margin-top: 30px;
+      font-size: 10px;
+    }
+
+    .ns-acc-chips {
+      margin-top: 16px;
+      gap: 9px;
+    }
+
+    .ns-acc-chips span {
+      min-height: 40px;
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 16px;
+      font-size: 14px;
+      max-width: 100%;
+    }
+  }
+
+  @media (max-width: 359px) {
+    .ns-acc-body {
+      padding-left: 0;
+    }
+  }
+</style>

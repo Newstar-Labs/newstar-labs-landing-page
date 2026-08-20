@@ -1,0 +1,179 @@
+---
+import { problems } from '../data/services';
+
+const icons: Record<(typeof problems)[number]['icon'], string> = {
+  chat: '<path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.5 8.5 0 0 1-3.9-.9L3 21l1.9-5A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5Z"></path>',
+  alert: '<circle cx="12" cy="12" r="9"></circle><path d="M12 8v4"></path><path d="M12 16h.01"></path>',
+  sync: '<path d="M4 4v6h6"></path><path d="M20 20v-6h-6"></path><path d="M20 10a8 8 0 0 0-14.1-4.1L4 10"></path><path d="M4 14a8 8 0 0 0 14.1 4.1L20 14"></path>',
+  search: '<circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path>',
+};
+---
+
+<section id="problema" class="ns-prob">
+  <div class="ns-prob-eyebrow">
+    <span class="ns-dot"></span>
+    <span class="ns-eyebrow-text">El problema</span>
+  </div>
+  <h2 class="ns-prob-title">Tu equipo pierde horas haciendo lo mismo, todos los días.</h2>
+
+  <div class="ns-prob-grid">
+    {
+      problems.map((problem) => (
+        <div tabindex="0" class="ns-prob-card">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" set:html={icons[problem.icon]} />
+          <p>{problem.text}</p>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .ns-prob {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    padding: 104px 24px;
+  }
+
+  .ns-prob-eyebrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .ns-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--color-emerald);
+  }
+
+  .ns-eyebrow-text {
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(var(--color-text-primary-rgb), 0.5);
+  }
+
+  .ns-prob-title {
+    font-family: var(--font-display);
+    font-size: clamp(30px, 4.8vw, 46px);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    text-align: center;
+    max-width: 45rem;
+    margin: 22px auto 0;
+    text-wrap: pretty;
+  }
+
+  .ns-prob-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+    gap: 16px;
+    margin-top: 56px;
+  }
+
+  .ns-prob-card {
+    background: rgba(var(--color-text-primary-rgb), 0.025);
+    box-shadow: inset 0 1px 1px rgba(var(--color-text-primary-rgb), 0.08);
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    padding: 22px;
+    color: rgba(var(--color-text-primary-rgb), 0.55);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s ease, color 0.45s ease, background 0.45s ease;
+  }
+
+  .ns-prob-card:hover,
+  .ns-prob-card:focus-visible {
+    transform: translateY(-3px);
+    color: var(--color-violet);
+    background: rgba(var(--color-text-primary-rgb), 0.045);
+    box-shadow:
+      inset 0 1px 1px rgba(var(--color-text-primary-rgb), 0.14),
+      0 0 0 1px rgba(var(--color-violet-rgb), 0.24),
+      0 14px 34px rgba(0, 0, 0, 0.5),
+      0 0 24px rgba(var(--color-violet-rgb), 0.09);
+  }
+
+  .ns-prob-card svg {
+    transition: filter 0.45s ease;
+  }
+
+  .ns-prob-card p {
+    margin: 16px 0 0;
+    font-size: 14px;
+    line-height: 1.55;
+    color: rgba(var(--color-text-primary-rgb), 0.72);
+  }
+
+  @media (max-width: 767px) {
+    .ns-prob {
+      overflow: clip;
+      width: 100%;
+      max-width: 100%;
+      padding-top: clamp(72px, 18vw, 88px);
+      padding-bottom: clamp(72px, 18vw, 88px);
+      padding-left: max(24px, env(safe-area-inset-left));
+      padding-right: max(24px, env(safe-area-inset-right));
+    }
+
+    .ns-prob-eyebrow {
+      justify-content: flex-start;
+    }
+
+    .ns-prob-title {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      margin: 22px 0 0;
+      text-align: left;
+      font-size: clamp(38px, 10.5vw, 44px);
+      line-height: 1.08;
+      letter-spacing: -0.032em;
+      white-space: normal;
+    }
+
+    .ns-prob-grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 14px;
+      margin-top: 50px;
+    }
+
+    .ns-prob-card {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 20px;
+      border-radius: 14px;
+      min-height: 88px;
+      height: auto;
+      max-width: 100%;
+    }
+
+    .ns-prob-card svg {
+      flex: none;
+      width: 22px;
+      height: 22px;
+    }
+
+    .ns-prob-card p {
+      margin: 0;
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .ns-prob-card:active,
+    .ns-prob-card:focus-visible {
+      color: var(--color-violet);
+      outline: none;
+      transform: translateY(-2px);
+      box-shadow:
+        inset 0 1px 1px rgba(var(--color-text-primary-rgb), 0.14),
+        0 0 0 1px rgba(var(--color-violet-rgb), 0.3),
+        0 10px 24px rgba(0, 0, 0, 0.45);
+    }
+  }
+</style>

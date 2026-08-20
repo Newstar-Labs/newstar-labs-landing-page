@@ -1,0 +1,852 @@
+---
+import { projects } from '../data/projects';
+---
+
+<section id="casos" class="ns-caso-sec">
+  <div class="ns-caso-eyebrow">
+    <span class="ns-dot"></span>
+    <span class="ns-eyebrow-text">Casos</span>
+  </div>
+  <h2 class="ns-caso-h2">Experiencia aplicada a problemas reales.</h2>
+  <p class="ns-caso-lead">Proyectos desarrollados por integrantes de nuestro equipo antes y durante la formación de Newstar Labs.</p>
+
+  <div
+    class="ns-caso-region"
+    id="ns-caso-region"
+    role="region"
+    aria-roledescription="carrusel"
+    aria-label="Proyectos del equipo"
+    tabindex="0"
+  >
+    <div class="ns-caso-card">
+      <div class="ns-caso-stack" id="ns-caso-stack">
+        {
+          projects.map((project, i) => (
+            <article class="ns-caso-slide" data-slide={i} aria-hidden={i === 0 ? 'false' : 'true'}>
+              <div class="ns-caso-grid">
+                <div class="ns-caso-text">
+                  <span class="ns-caso-cat">{project.category}</span>
+                  <h3 class="ns-caso-title">{project.title}</h3>
+
+                  <div class="ns-caso-blk ns-caso-reto">
+                    <span class="ns-caso-blk-label">EL RETO</span>
+                    <p>{project.reto}</p>
+                  </div>
+
+                  <div class="ns-caso-blk ns-caso-sol">
+                    <span class="ns-caso-blk-label">LA SOLUCIÓN</span>
+                    <p>{project.solucion}</p>
+                  </div>
+
+                  <p class={`ns-caso-impact ns-caso-impact--${project.impactSize}`}>{project.impact}</p>
+
+                  <div class="ns-caso-chips">
+                    {project.chips.map((chip) => <span>{chip}</span>)}
+                  </div>
+
+                  <div class="ns-caso-note">
+                    <span>PROYECTO DESARROLLADO POR INTEGRANTES DEL EQUIPO</span>
+                  </div>
+                </div>
+
+                <div class="ns-caso-vis">
+                  {project.visual.type === 'image' ? (
+                    <div class="ns-caso-vis-glow ns-caso-vis-glow--center" />
+                  ) : (
+                    <div class="ns-caso-vis-glow" />
+                  )}
+
+                  {project.visual.type === 'compare' && (
+                    <div class="ns-caso-vis-inner">
+                      <div class="ns-caso-mod">
+                        <div class="ns-caso-compare">
+                          <div class="ns-caso-compare-col">
+                            <span class="ns-caso-compare-label">{project.visual.beforeLabel}</span>
+                            <div class="ns-caso-compare-bars">
+                              <div style="background:rgba(var(--color-text-primary-rgb),0.12)" />
+                              <div style="background:rgba(var(--color-text-primary-rgb),0.1)" />
+                              <div style="background:rgba(var(--color-text-primary-rgb),0.08)" />
+                              <div style="background:rgba(var(--color-text-primary-rgb),0.06)" />
+                            </div>
+                          </div>
+                          <span class="ns-caso-compare-arrow">→</span>
+                          <div class="ns-caso-compare-col">
+                            <span class="ns-caso-compare-label ns-caso-compare-label--emerald">{project.visual.afterLabel}</span>
+                            <div class="ns-caso-compare-bars">
+                              <div style="background:rgba(var(--color-emerald-rgb),0.55)" />
+                              <div style="background:rgba(var(--color-emerald-rgb),0.45)" />
+                              <div style="background:rgba(var(--color-emerald-rgb),0.35)" />
+                              <div style="background:rgba(var(--color-emerald-rgb),0.25)" />
+                            </div>
+                          </div>
+                        </div>
+                        <div class="ns-caso-compare-stat">
+                          <span class="ns-caso-compare-before">{project.visual.beforeValue}</span>
+                          <span class="ns-caso-compare-arrow">→</span>
+                          <span class="ns-caso-compare-after">{project.visual.afterValue}</span>
+                        </div>
+                        <span class="ns-caso-compare-caption">{project.visual.caption}</span>
+                      </div>
+                      <div class="ns-caso-ph">
+                        <span>ESPACIO RESERVADO · IMAGEN DEL PROYECTO {i + 1}</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {project.visual.type === 'pipeline' && (
+                    <div class="ns-caso-vis-inner">
+                      <div class="ns-caso-mod ns-caso-pipeline">
+                        {project.visual.steps.map((step, si) => (
+                          <>
+                            <div class="ns-caso-pipe-row">
+                              <span class={`ns-caso-pipe-dot ${step.active ? 'is-active' : ''}`} />
+                              <span>{step.label}</span>
+                            </div>
+                            {si < project.visual.steps.length - 1 && (
+                              <div class={`ns-caso-pipe-connector ${si === project.visual.steps.length - 2 ? 'is-active' : ''}`} />
+                            )}
+                          </>
+                        ))}
+                        <div class="ns-caso-pipe-status">
+                          <span class="ns-caso-pipe-status-dot" />
+                          <span>{project.visual.statusLabel}</span>
+                        </div>
+                      </div>
+                      <div class="ns-caso-ph">
+                        <span>ESPACIO RESERVADO · IMAGEN DEL PROYECTO {i + 1}</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {project.visual.type === 'image' && (
+                    <img class="ns-caso-img" src={project.visual.src} alt={project.visual.alt} loading="lazy" decoding="async" />
+                  )}
+                </div>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="ns-caso-tabs" role="tablist" aria-label="Seleccionar proyecto">
+      {
+        projects.map((project, i) => (
+          <button type="button" role="tab" class="ns-caso-tabbtn" aria-label={project.tabLabel} aria-selected={i === 0 ? 'true' : 'false'} data-goto={i}>
+            <span class="ns-caso-seg" data-seg={i} />
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="ns-caso-nav">
+      <button type="button" class="ns-caso-navbtn" data-prev aria-label="Proyecto anterior" disabled>‹</button>
+      <div class="ns-caso-nav-tabs" role="tablist" aria-label="Ir a un proyecto">
+        {
+          projects.map((project, i) => (
+            <button type="button" role="tab" class="ns-caso-tabbtn" aria-label={project.tabLabel} aria-selected={i === 0 ? 'true' : 'false'} data-goto={i}>
+              <span class="ns-caso-seg" data-seg={i} />
+            </button>
+          ))
+        }
+      </div>
+      <button type="button" class="ns-caso-navbtn" data-next aria-label="Proyecto siguiente">›</button>
+    </div>
+
+    <button type="button" aria-label="Proyecto anterior" class="ns-caso-arrow ns-caso-arrow-prev" data-prev>‹</button>
+    <button type="button" aria-label="Proyecto siguiente" class="ns-caso-arrow ns-caso-arrow-next" data-next>›</button>
+
+    <p class="ns-sr-only" role="status" aria-live="polite" id="ns-caso-status"></p>
+  </div>
+</section>
+
+<script define:vars={{ tabLabels: projects.map((p) => p.tabLabel), total: projects.length }}>
+  const region = document.getElementById('ns-caso-region');
+  const stack = document.getElementById('ns-caso-stack');
+  const status = document.getElementById('ns-caso-status');
+  if (region && stack && status) {
+    const slides = Array.from(stack.querySelectorAll('[data-slide]'));
+    const gotoBtns = Array.from(region.querySelectorAll('[data-goto]'));
+    const segs = Array.from(region.querySelectorAll('[data-seg]'));
+    const prevBtns = Array.from(region.querySelectorAll('[data-prev]'));
+    const nextBtns = Array.from(region.querySelectorAll('[data-next]'));
+    const navPrev = region.querySelector('.ns-caso-nav [data-prev]');
+    const navNext = region.querySelector('.ns-caso-nav [data-next]');
+
+    let current = 0;
+    let touchStartX = null;
+
+    const render = () => {
+      slides.forEach((slide, i) => {
+        const on = i === current;
+        const offset = i < current ? -28 : 28;
+        slide.style.opacity = on ? '1' : '0';
+        slide.style.transform = `translateX(${on ? 0 : offset}px)`;
+        slide.style.visibility = on ? 'visible' : 'hidden';
+        slide.style.pointerEvents = on ? 'auto' : 'none';
+        slide.setAttribute('aria-hidden', on ? 'false' : 'true');
+      });
+
+      gotoBtns.forEach((btn) => {
+        const idx = Number(btn.dataset.goto);
+        btn.setAttribute('aria-selected', idx === current ? 'true' : 'false');
+      });
+
+      segs.forEach((seg) => {
+        const idx = Number(seg.dataset.seg);
+        seg.classList.toggle('is-active', idx === current);
+      });
+
+      if (navPrev) navPrev.disabled = current === 0;
+      if (navNext) navNext.disabled = current === total - 1;
+
+      status.textContent = `Proyecto ${current + 1} de ${total}: ${tabLabels[current]}`;
+    };
+
+    const goTo = (index) => {
+      current = (index + total) % total;
+      render();
+    };
+
+    gotoBtns.forEach((btn) => {
+      btn.addEventListener('click', () => goTo(Number(btn.dataset.goto)));
+    });
+    prevBtns.forEach((btn) => btn.addEventListener('click', () => goTo(current - 1)));
+    nextBtns.forEach((btn) => btn.addEventListener('click', () => goTo(current + 1)));
+
+    region.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        goTo(current - 1);
+      } else if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        goTo(current + 1);
+      }
+    });
+
+    region.addEventListener(
+      'touchstart',
+      (event) => {
+        touchStartX = event.touches[0].clientX;
+      },
+      { passive: true },
+    );
+
+    region.addEventListener('touchend', (event) => {
+      if (touchStartX == null) return;
+      const delta = event.changedTouches[0].clientX - touchStartX;
+      touchStartX = null;
+      if (Math.abs(delta) > 45) goTo(current + (delta < 0 ? 1 : -1));
+    });
+
+    render();
+  }
+</script>
+
+<style>
+  .ns-caso-sec {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    padding: 104px 24px;
+  }
+
+  .ns-caso-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .ns-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--color-emerald);
+  }
+
+  .ns-eyebrow-text {
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(var(--color-text-primary-rgb), 0.5);
+  }
+
+  .ns-caso-h2 {
+    font-family: var(--font-display);
+    font-size: clamp(29px, 4.6vw, 44px);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin: 20px 0 0;
+    max-width: 32rem;
+  }
+
+  .ns-caso-lead {
+    margin: 16px 0 0;
+    max-width: 34rem;
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+    text-wrap: pretty;
+  }
+
+  .ns-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .ns-caso-region {
+    position: relative;
+    margin-top: 44px;
+    outline: none;
+  }
+
+  .ns-caso-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 20px;
+    box-shadow: 0 0 0 1px rgba(var(--color-violet-rgb), 0.06), 0 24px 60px rgba(0, 0, 0, 0.35);
+    overflow: hidden;
+  }
+
+  .ns-caso-stack {
+    display: grid;
+    grid-template-areas: 'slide';
+  }
+
+  .ns-caso-slide {
+    grid-area: slide;
+    min-width: 0;
+    transition: opacity 0.42s ease-out, transform 0.42s ease-out;
+  }
+
+  .ns-caso-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 40px;
+    padding: clamp(24px, 3.4vw, 44px);
+  }
+
+  .ns-caso-text {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 0;
+  }
+
+  .ns-caso-cat {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    color: rgba(var(--color-violet-rgb), 0.9);
+  }
+
+  .ns-caso-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(23px, 2.6vw, 30px);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: var(--color-text-primary);
+  }
+
+  .ns-caso-blk {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .ns-caso-blk-label {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    color: rgba(var(--color-text-primary-rgb), 0.38);
+  }
+
+  .ns-caso-blk p {
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 1.62;
+    color: var(--color-text-secondary);
+    text-wrap: pretty;
+  }
+
+  .ns-caso-impact {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--color-emerald);
+  }
+
+  .ns-caso-impact--lg {
+    font-size: 19px;
+  }
+
+  .ns-caso-impact--md {
+    font-size: 17px;
+    line-height: 1.35;
+  }
+
+  .ns-caso-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .ns-caso-chips span {
+    font-size: 12px;
+    padding: 6px 13px;
+    border-radius: 999px;
+    border: 1px solid rgba(var(--color-violet-rgb), 0.28);
+    background: rgba(var(--color-violet-rgb), 0.08);
+    color: var(--color-violet);
+  }
+
+  .ns-caso-note {
+    margin-top: auto;
+    padding-top: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .ns-caso-note span {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    color: rgba(var(--color-text-primary-rgb), 0.3);
+  }
+
+  .ns-caso-vis {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .ns-caso-vis-glow {
+    position: absolute;
+    inset: 12% 8%;
+    background: radial-gradient(circle, rgba(var(--color-emerald-rgb), 0.14), rgba(var(--color-bg-rgb), 0) 70%);
+    pointer-events: none;
+  }
+
+  .ns-caso-vis-glow--center {
+    inset: 14% 6%;
+    background: radial-gradient(circle, rgba(var(--color-violet-rgb), 0.16), rgba(var(--color-bg-rgb), 0) 70%);
+  }
+
+  .ns-caso-vis-inner {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .ns-caso-mod {
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background: rgba(var(--color-bg-rgb), 0.5);
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .ns-caso-compare {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .ns-caso-compare-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ns-caso-compare-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    color: rgba(var(--color-text-primary-rgb), 0.35);
+  }
+
+  .ns-caso-compare-label--emerald {
+    color: rgba(var(--color-emerald-rgb), 0.8);
+  }
+
+  .ns-caso-compare-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .ns-caso-compare-bars div {
+    height: 7px;
+    border-radius: 2px;
+  }
+
+  .ns-caso-compare-arrow {
+    color: var(--color-violet);
+    font-size: 18px;
+  }
+
+  .ns-caso-compare-stat {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 14px;
+    border-top: 1px solid rgba(var(--color-text-primary-rgb), 0.07);
+    padding-top: 18px;
+  }
+
+  .ns-caso-compare-before {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 600;
+    color: rgba(var(--color-text-primary-rgb), 0.35);
+    text-decoration: line-through;
+    text-decoration-thickness: 1px;
+  }
+
+  .ns-caso-compare-after {
+    font-family: var(--font-display);
+    font-size: clamp(34px, 4.4vw, 46px);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: var(--color-emerald);
+  }
+
+  .ns-caso-compare-caption {
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    color: rgba(var(--color-text-primary-rgb), 0.3);
+  }
+
+  .ns-caso-pipeline {
+    gap: 0;
+  }
+
+  .ns-caso-pipe-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .ns-caso-pipe-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 2px;
+    border: 1px solid rgba(var(--color-violet-rgb), 0.6);
+    background: rgba(var(--color-violet-rgb), 0.2);
+  }
+
+  .ns-caso-pipe-dot.is-active {
+    border-color: rgba(var(--color-emerald-rgb), 0.7);
+    background: rgba(var(--color-emerald-rgb), 0.28);
+  }
+
+  .ns-caso-pipe-row span:last-child {
+    font-size: 13px;
+    color: var(--color-text-primary);
+  }
+
+  .ns-caso-pipe-connector {
+    height: 20px;
+    width: 1px;
+    margin-left: 4px;
+    background: linear-gradient(180deg, rgba(var(--color-violet-rgb), 0.5), rgba(var(--color-violet-rgb), 0.15));
+  }
+
+  .ns-caso-pipe-connector.is-active {
+    background: linear-gradient(180deg, rgba(var(--color-violet-rgb), 0.5), rgba(var(--color-emerald-rgb), 0.35));
+  }
+
+  .ns-caso-pipe-status {
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(var(--color-text-primary-rgb), 0.07);
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+
+  .ns-caso-pipe-status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--color-emerald);
+  }
+
+  .ns-caso-pipe-status span:last-child {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    color: rgba(var(--color-emerald-rgb), 0.85);
+  }
+
+  .ns-caso-ph {
+    border: 1px dashed rgba(var(--color-violet-rgb), 0.3);
+    border-radius: 8px;
+    background: rgba(var(--color-violet-rgb), 0.03);
+    min-height: 104px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 16px;
+  }
+
+  .ns-caso-ph span {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    color: rgba(var(--color-text-primary-rgb), 0.32);
+    line-height: 1.7;
+  }
+
+  .ns-caso-img {
+    position: relative;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: 460px;
+    object-fit: contain;
+    margin: 0 auto;
+    filter: drop-shadow(0 24px 44px rgba(0, 0, 0, 0.55));
+  }
+
+  .ns-caso-tabs {
+    display: flex;
+    gap: 10px;
+    padding: 0 clamp(24px, 3.4vw, 44px) 6px;
+  }
+
+  .ns-caso-tabbtn {
+    flex: 1;
+    padding: 14px 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .ns-caso-seg {
+    display: block;
+    height: 3px;
+    border-radius: 999px;
+    background: rgba(var(--color-violet-rgb), 0.25);
+    transition: background 0.4s ease-out;
+  }
+
+  .ns-caso-seg.is-active {
+    background: var(--color-emerald);
+  }
+
+  .ns-caso-nav {
+    display: none;
+    align-items: center;
+    gap: 12px;
+    padding: 4px clamp(20px, 4vw, 24px) 20px;
+  }
+
+  .ns-caso-nav-tabs {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    gap: 8px;
+  }
+
+  .ns-caso-navbtn {
+    width: 44px;
+    height: 44px;
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    background: #141416;
+    color: var(--color-violet);
+    font-size: 18px;
+    cursor: pointer;
+    transition: border-color 0.3s ease-out, background 0.3s ease-out;
+  }
+
+  .ns-caso-navbtn:hover {
+    border-color: rgba(var(--color-violet-rgb), 0.55);
+    background: rgba(var(--color-violet-rgb), 0.12);
+  }
+
+  .ns-caso-navbtn:disabled {
+    opacity: 0.28;
+    cursor: default;
+  }
+
+  .ns-caso-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    background: #141416;
+    color: var(--color-violet);
+    font-size: 17px;
+    cursor: pointer;
+    transition: border-color 0.35s ease-out, background 0.35s ease-out;
+  }
+
+  .ns-caso-arrow:hover {
+    border-color: rgba(var(--color-violet-rgb), 0.55);
+    background: rgba(var(--color-violet-rgb), 0.12);
+  }
+
+  .ns-caso-arrow-prev {
+    left: -10px;
+  }
+
+  .ns-caso-arrow-next {
+    right: -10px;
+  }
+
+  @media (max-width: 767px) {
+    .ns-caso-sec {
+      overflow: clip;
+      width: 100%;
+      max-width: 100%;
+      padding-top: clamp(72px, 18vw, 88px);
+      padding-bottom: clamp(72px, 18vw, 88px);
+      padding-left: max(22px, env(safe-area-inset-left));
+      padding-right: max(22px, env(safe-area-inset-right));
+    }
+
+    .ns-caso-h2 {
+      font-size: clamp(38px, 10.5vw, 44px);
+      line-height: 1.08;
+      letter-spacing: -0.032em;
+      max-width: 100%;
+    }
+
+    .ns-caso-lead {
+      font-size: 16px;
+      line-height: 1.6;
+      max-width: 100%;
+    }
+
+    .ns-caso-region {
+      margin-top: 44px;
+      touch-action: pan-y;
+    }
+
+    .ns-caso-card {
+      border-radius: 26px;
+      max-width: 100%;
+    }
+
+    .ns-caso-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      padding: 24px;
+    }
+
+    .ns-caso-text {
+      display: contents;
+    }
+
+    .ns-caso-cat {
+      order: 1;
+    }
+
+    .ns-caso-title {
+      order: 2;
+      font-size: clamp(28px, 7.6vw, 34px);
+      line-height: 1.12;
+    }
+
+    .ns-caso-impact {
+      order: 3;
+      font-size: clamp(22px, 5.8vw, 26px) !important;
+      line-height: 1.2;
+    }
+
+    .ns-caso-reto {
+      order: 4;
+    }
+
+    .ns-caso-sol {
+      order: 5;
+    }
+
+    .ns-caso-blk p {
+      font-size: 16px;
+      line-height: 1.55;
+    }
+
+    .ns-caso-vis {
+      order: 6;
+      width: 100%;
+      max-width: 100%;
+      align-items: stretch;
+    }
+
+    .ns-caso-chips {
+      order: 7;
+      gap: 9px;
+    }
+
+    .ns-caso-chips span:nth-child(n + 4) {
+      display: none;
+    }
+
+    .ns-caso-note {
+      order: 8;
+      margin-top: 4px;
+      padding-top: 0;
+    }
+
+    .ns-caso-mod {
+      padding: 18px;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .ns-caso-img {
+      max-height: 300px;
+    }
+
+    .ns-caso-ph {
+      display: none;
+    }
+
+    .ns-caso-tabs {
+      display: none;
+    }
+
+    .ns-caso-arrow {
+      display: none;
+    }
+
+    .ns-caso-nav {
+      display: flex;
+    }
+  }
+</style>

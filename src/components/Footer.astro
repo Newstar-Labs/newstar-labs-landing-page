@@ -1,0 +1,312 @@
+---
+import { navLinks, site, whatsappHref, mailHref } from '../data/site';
+import LogoMark from './LogoMark.astro';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="ns-foot">
+  <div class="ns-foot-grid">
+    <div class="ns-foot-idcol">
+      <div class="ns-foot-idrow">
+        <div class="ns-foot-logo">
+          <LogoMark size={22} idPrefix="ns-foot-logomark" class="ns-foot-logoimg" />
+        </div>
+        <span class="ns-foot-name">{site.name}</span>
+      </div>
+      <p class="ns-foot-desc">{site.tagline}</p>
+      <span class="ns-foot-loc">{site.location}</span>
+    </div>
+
+    <nav class="ns-foot-nav" aria-label="Navegación del pie de página">
+      <span class="ns-foot-lab">EXPLORA</span>
+      {navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+    </nav>
+
+    <div class="ns-foot-contact">
+      <span class="ns-foot-lab">CONTACTO</span>
+      <a href={whatsappHref} target="_blank" rel="noopener noreferrer" aria-label="Contactar a Newstar Labs por WhatsApp">WhatsApp</a>
+      <a href={mailHref} aria-label="Enviar un correo a Newstar Labs" class="ns-foot-mail">{site.email}</a>
+      <div class="ns-foot-social">
+        <a href={site.social.facebook} target="_blank" rel="noopener noreferrer" aria-label="Newstar Labs en Facebook" title="Facebook" class="ns-foot-slink">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M14.5 8.5h2.2V5.6h-2.4c-2.2 0-3.6 1.4-3.6 3.7v1.5H8.5v2.9h2.2V21h3v-7.3h2.3l.4-2.9h-2.7V9.6c0-.7.3-1.1.8-1.1Z"></path>
+          </svg>
+        </a>
+        <a href={site.social.instagram} target="_blank" rel="noopener noreferrer" aria-label="Newstar Labs en Instagram" title="Instagram" class="ns-foot-slink">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3.5" y="3.5" width="17" height="17" rx="4.6"></rect><circle cx="12" cy="12" r="3.7"></circle><circle cx="16.9" cy="7.1" r="0.9" fill="currentColor" stroke="none"></circle>
+          </svg>
+        </a>
+        <a href={site.social.linkedin} target="_blank" rel="noopener noreferrer" aria-label="Newstar Labs en LinkedIn" title="LinkedIn" class="ns-foot-slink">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6.2 9.6V19"></path><path d="M6.2 5.6v.8"></path><path d="M10.8 19v-5.3a3.1 3.1 0 0 1 6.2 0V19"></path><path d="M10.8 9.6V19"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ns-foot-legalwrap">
+    <div class="ns-foot-legal">
+      <span>© {year} {site.name}. Todos los derechos reservados.</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ns-foot {
+    border-top: 1px solid var(--color-border);
+    background: var(--color-bg);
+  }
+
+  .ns-foot-grid {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    padding: 52px 24px 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 40px;
+    align-items: start;
+  }
+
+  .ns-foot-idcol {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .ns-foot-idrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .ns-foot-logo {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+  }
+
+  .ns-foot-logoimg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .ns-foot-name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--color-text-primary);
+  }
+
+  .ns-foot-desc {
+    margin: 0;
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    max-width: 17rem;
+    text-wrap: pretty;
+  }
+
+  .ns-foot-loc {
+    font-size: 12.5px;
+    color: rgba(var(--color-text-primary-rgb), 0.42);
+  }
+
+  .ns-foot-nav,
+  .ns-foot-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .ns-foot-lab {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    color: rgba(var(--color-text-primary-rgb), 0.4);
+    margin-bottom: 8px;
+  }
+
+  .ns-foot-nav a,
+  .ns-foot-contact a {
+    font-size: 13.5px;
+    color: var(--color-text-secondary);
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    transition: color 0.35s ease-out;
+  }
+
+  .ns-foot-nav a:hover,
+  .ns-foot-contact a:hover {
+    color: var(--color-emerald);
+  }
+
+  .ns-foot-mail {
+    overflow-wrap: anywhere;
+  }
+
+  .ns-foot-social {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .ns-foot-slink {
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    color: var(--color-violet);
+    transition: color 0.35s ease-out, border-color 0.35s ease-out, background 0.35s ease-out;
+  }
+
+  .ns-foot-slink:hover {
+    color: var(--color-emerald);
+    border-color: rgba(var(--color-emerald-rgb), 0.45);
+    background: rgba(var(--color-emerald-rgb), 0.06);
+  }
+
+  .ns-foot-legalwrap {
+    max-width: var(--content-max);
+    margin: 36px auto 0;
+    padding: 0 24px;
+  }
+
+  .ns-foot-legal {
+    border-top: 1px solid var(--color-border);
+    padding: 20px 0 36px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 24px;
+  }
+
+  .ns-foot-legal span {
+    font-size: 12.5px;
+    color: rgba(var(--color-text-primary-rgb), 0.5);
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .ns-foot-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 44px 56px;
+      padding-left: clamp(40px, 6vw, 56px);
+      padding-right: clamp(40px, 6vw, 56px);
+    }
+
+    .ns-foot-legalwrap {
+      padding-left: clamp(40px, 6vw, 56px);
+      padding-right: clamp(40px, 6vw, 56px);
+    }
+
+    .ns-foot-contact {
+      grid-column: 2;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .ns-foot-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 46px;
+      padding-top: 52px;
+      padding-left: max(24px, env(safe-area-inset-left));
+      padding-right: max(26px, env(safe-area-inset-right));
+    }
+
+    .ns-foot-idcol {
+      gap: 0;
+    }
+
+    .ns-foot-idrow {
+      gap: 13px;
+    }
+
+    .ns-foot-logo {
+      width: 46px;
+      height: 46px;
+    }
+
+    .ns-foot-logoimg {
+      width: 34px;
+      height: 34px;
+    }
+
+    .ns-foot-name {
+      font-size: 21px;
+    }
+
+    .ns-foot-desc {
+      font-size: 16px;
+      line-height: 1.55;
+      margin-top: 22px;
+      max-width: 100%;
+    }
+
+    .ns-foot-loc {
+      font-size: 15px;
+      margin-top: 14px;
+    }
+
+    .ns-foot-lab {
+      font-size: 12.5px;
+      margin-bottom: 20px;
+    }
+
+    .ns-foot-nav,
+    .ns-foot-contact {
+      display: grid;
+      gap: 8px;
+    }
+
+    .ns-foot-nav a,
+    .ns-foot-contact a {
+      font-size: 16.5px;
+      line-height: 1.35;
+      min-height: 0;
+      padding: 11px 0;
+    }
+
+    .ns-foot-social {
+      gap: 13px;
+      margin-top: 26px;
+    }
+
+    .ns-foot-slink {
+      width: 50px;
+      height: 50px;
+    }
+
+    .ns-foot-slink svg {
+      width: 19px;
+      height: 19px;
+    }
+
+    .ns-foot-legalwrap {
+      margin-top: 48px;
+      padding-left: max(24px, env(safe-area-inset-left));
+      padding-right: max(26px, env(safe-area-inset-right));
+    }
+
+    .ns-foot-legal {
+      padding: 26px 0 32px;
+    }
+
+    .ns-foot-legal span {
+      font-size: 13px;
+      line-height: 1.55;
+      white-space: normal;
+    }
+  }
+</style>
