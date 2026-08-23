@@ -102,12 +102,18 @@ import { navLinks, whatsappHref } from '../data/site';
 </script>
 
 <style>
+  :global(:root) {
+    --nav-height: 70px;
+  }
+
   .ns-navbar {
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
+    right: 0;
     z-index: 40;
-    backdrop-filter: blur(14px);
-    background: rgba(var(--color-bg-rgb), 0.65);
+    backdrop-filter: blur(8px);
+    background: rgba(var(--color-bg-rgb), 0.78);
     border-bottom: 1px solid rgba(var(--color-text-primary-rgb), 0.06);
     animation: ns-fade 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
@@ -282,6 +288,10 @@ import { navLinks, whatsappHref } from '../data/site';
   }
 
   @media (max-width: 900px) {
+    :global(:root) {
+      --nav-height: 75px;
+    }
+
     .ns-navlinks {
       display: none;
     }
@@ -292,6 +302,10 @@ import { navLinks, whatsappHref } from '../data/site';
   }
 
   @media (max-width: 767px) {
+    :global(:root) {
+      --nav-height: 67px;
+    }
+
     .ns-navcta {
       display: none;
     }
