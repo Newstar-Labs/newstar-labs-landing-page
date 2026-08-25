@@ -56,66 +56,22 @@ import { projects } from '../data/projects';
                     <div class="ns-caso-vis-glow" />
                   )}
 
-                  {project.visual.type === 'compare' && (
-                    <div class="ns-caso-vis-inner">
-                      <div class="ns-caso-mod">
-                        <div class="ns-caso-compare">
-                          <div class="ns-caso-compare-col">
-                            <span class="ns-caso-compare-label">{project.visual.beforeLabel}</span>
-                            <div class="ns-caso-compare-bars">
-                              <div style="background:rgba(var(--color-text-primary-rgb),0.12)" />
-                              <div style="background:rgba(var(--color-text-primary-rgb),0.1)" />
-                              <div style="background:rgba(var(--color-text-primary-rgb),0.08)" />
-                              <div style="background:rgba(var(--color-text-primary-rgb),0.06)" />
-                            </div>
-                          </div>
-                          <span class="ns-caso-compare-arrow">→</span>
-                          <div class="ns-caso-compare-col">
-                            <span class="ns-caso-compare-label ns-caso-compare-label--emerald">{project.visual.afterLabel}</span>
-                            <div class="ns-caso-compare-bars">
-                              <div style="background:rgba(var(--color-emerald-rgb),0.55)" />
-                              <div style="background:rgba(var(--color-emerald-rgb),0.45)" />
-                              <div style="background:rgba(var(--color-emerald-rgb),0.35)" />
-                              <div style="background:rgba(var(--color-emerald-rgb),0.25)" />
-                            </div>
-                          </div>
-                        </div>
-                        <div class="ns-caso-compare-stat">
-                          <span class="ns-caso-compare-before">{project.visual.beforeValue}</span>
-                          <span class="ns-caso-compare-arrow">→</span>
-                          <span class="ns-caso-compare-after">{project.visual.afterValue}</span>
-                        </div>
-                        <span class="ns-caso-compare-caption">{project.visual.caption}</span>
-                      </div>
-                      <div class="ns-caso-ph">
-                        <span>ESPACIO RESERVADO · IMAGEN DEL PROYECTO {i + 1}</span>
-                      </div>
-                    </div>
-                  )}
-
-                  {project.visual.type === 'pipeline' && (
-                    <div class="ns-caso-vis-inner">
-                      <div class="ns-caso-mod ns-caso-pipeline">
-                        {project.visual.steps.map((step, si) => (
-                          <>
-                            <div class="ns-caso-pipe-row">
-                              <span class={`ns-caso-pipe-dot ${step.active ? 'is-active' : ''}`} />
-                              <span>{step.label}</span>
-                            </div>
-                            {si < project.visual.steps.length - 1 && (
-                              <div class={`ns-caso-pipe-connector ${si === project.visual.steps.length - 2 ? 'is-active' : ''}`} />
-                            )}
-                          </>
-                        ))}
-                        <div class="ns-caso-pipe-status">
-                          <span class="ns-caso-pipe-status-dot" />
-                          <span>{project.visual.statusLabel}</span>
+                  {(project.visual.type === 'compare' || project.visual.type === 'pipeline') && (
+                    project.screenshot ? (
+                      <img
+                        class="ns-caso-img"
+                        src={project.screenshot.src}
+                        alt={project.screenshot.alt}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    ) : (
+                      <div class="ns-caso-vis-inner">
+                        <div class="ns-caso-ph">
+                          <span>ESPACIO RESERVADO · IMAGEN DEL PROYECTO {i + 1}</span>
                         </div>
                       </div>
-                      <div class="ns-caso-ph">
-                        <span>ESPACIO RESERVADO · IMAGEN DEL PROYECTO {i + 1}</span>
-                      </div>
-                    </div>
+                    )
                   )}
 
                   {project.visual.type === 'image' && (
@@ -461,152 +417,6 @@ import { projects } from '../data/projects';
     gap: 14px;
   }
 
-  .ns-caso-mod {
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    background: rgba(var(--color-bg-rgb), 0.5);
-    padding: 22px;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-  }
-
-  .ns-caso-compare {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-  }
-
-  .ns-caso-compare-col {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .ns-caso-compare-label {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.16em;
-    color: rgba(var(--color-text-primary-rgb), 0.35);
-  }
-
-  .ns-caso-compare-label--emerald {
-    color: rgba(var(--color-emerald-rgb), 0.8);
-  }
-
-  .ns-caso-compare-bars {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-
-  .ns-caso-compare-bars div {
-    height: 7px;
-    border-radius: 2px;
-  }
-
-  .ns-caso-compare-arrow {
-    color: var(--color-violet);
-    font-size: 18px;
-  }
-
-  .ns-caso-compare-stat {
-    display: flex;
-    align-items: baseline;
-    justify-content: center;
-    gap: 14px;
-    border-top: 1px solid rgba(var(--color-text-primary-rgb), 0.07);
-    padding-top: 18px;
-  }
-
-  .ns-caso-compare-before {
-    font-family: var(--font-display);
-    font-size: 26px;
-    font-weight: 600;
-    color: rgba(var(--color-text-primary-rgb), 0.35);
-    text-decoration: line-through;
-    text-decoration-thickness: 1px;
-  }
-
-  .ns-caso-compare-after {
-    font-family: var(--font-display);
-    font-size: clamp(34px, 4.4vw, 46px);
-    font-weight: 600;
-    letter-spacing: -0.03em;
-    color: var(--color-emerald);
-  }
-
-  .ns-caso-compare-caption {
-    text-align: center;
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.16em;
-    color: rgba(var(--color-text-primary-rgb), 0.3);
-  }
-
-  .ns-caso-pipeline {
-    gap: 0;
-  }
-
-  .ns-caso-pipe-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .ns-caso-pipe-dot {
-    width: 9px;
-    height: 9px;
-    border-radius: 2px;
-    border: 1px solid rgba(var(--color-violet-rgb), 0.6);
-    background: rgba(var(--color-violet-rgb), 0.2);
-  }
-
-  .ns-caso-pipe-dot.is-active {
-    border-color: rgba(var(--color-emerald-rgb), 0.7);
-    background: rgba(var(--color-emerald-rgb), 0.28);
-  }
-
-  .ns-caso-pipe-row span:last-child {
-    font-size: 13px;
-    color: var(--color-text-primary);
-  }
-
-  .ns-caso-pipe-connector {
-    height: 20px;
-    width: 1px;
-    margin-left: 4px;
-    background: linear-gradient(180deg, rgba(var(--color-violet-rgb), 0.5), rgba(var(--color-violet-rgb), 0.15));
-  }
-
-  .ns-caso-pipe-connector.is-active {
-    background: linear-gradient(180deg, rgba(var(--color-violet-rgb), 0.5), rgba(var(--color-emerald-rgb), 0.35));
-  }
-
-  .ns-caso-pipe-status {
-    margin-top: 18px;
-    padding-top: 16px;
-    border-top: 1px solid rgba(var(--color-text-primary-rgb), 0.07);
-    display: flex;
-    align-items: center;
-    gap: 9px;
-  }
-
-  .ns-caso-pipe-status-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 999px;
-    background: var(--color-emerald);
-  }
-
-  .ns-caso-pipe-status span:last-child {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 0.16em;
-    color: rgba(var(--color-emerald-rgb), 0.85);
-  }
-
   .ns-caso-ph {
     border: 1px dashed rgba(var(--color-violet-rgb), 0.3);
     border-radius: 8px;
@@ -829,12 +639,6 @@ import { projects } from '../data/projects';
       order: 8;
       margin-top: 4px;
       padding-top: 0;
-    }
-
-    .ns-caso-mod {
-      padding: 18px;
-      border-radius: 12px;
-      overflow: hidden;
     }
 
     .ns-caso-img {
