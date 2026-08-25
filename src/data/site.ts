@@ -5,15 +5,15 @@ export const site = {
   tagline: 'Tecnología creada para tu operación real.',
   locale: 'es',
   url: 'https://newstarlabs.pe',
-  email: 'hola@newstarlabs.pe',
-  whatsappNumber: '51999999999',
+  email: 'newstarlabs@gmail.com',
+  whatsappNumber: '51944029240',
   whatsappMessage:
-    'Hola, vi la página de Newstar Labs y me gustaría conversar sobre un proceso de mi empresa que quiero mejorar.',
+    'Hola, vi la página de Newstar Labs y me gustaría mejorar los procesos de mi empresa. ¿Podemos conversar?',
   location: 'Lima, Perú · Atención remota',
   social: {
-    facebook: 'https://www.facebook.com/gino.calixtow/',
-    instagram: 'https://www.instagram.com/gino.calixtow/',
-    linkedin: 'https://www.linkedin.com/in/ginoquispecalixto/',
+    facebook: 'https://www.facebook.com/NewstarLabs',
+    instagram: 'https://www.instagram.com/newstarlabs',
+    linkedin: 'https://www.linkedin.com/company/newstar-labs',
   },
 } as const;
 
