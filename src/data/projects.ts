@@ -9,6 +9,8 @@ export interface Project {
   /** 'lg' = big single-line emerald stat, 'md' = smaller multi-line emerald sentence */
   impactSize: 'lg' | 'md';
   chips: string[];
+  /** Optional real project screenshot shown below the compare/pipeline mockup */
+  screenshot?: { src: string; alt: string };
   visual:
     | { type: 'compare'; beforeLabel: string; afterLabel: string; beforeValue: string; afterValue: string; caption: string }
     | { type: 'pipeline'; steps: { label: string; active?: boolean }[]; statusLabel: string }
@@ -16,26 +18,6 @@ export interface Project {
 }
 
 export const projects: Project[] = [
-  {
-    id: 'planos',
-    tabLabel: 'Automatización de planos',
-    category: 'INGENIERÍA Y PROYECTOS',
-    title: 'De 3 minutos a 2.17 segundos por plano.',
-    reto: 'El llenado manual de membretes generaba un cuello de botella durante la preparación de entregables de ingeniería.',
-    solucion:
-      'Se desarrolló un complemento que automatiza la gestión y el llenado de información en los planos, manteniendo la estructura requerida por el equipo.',
-    impact: '97.5% menos tiempo por plano.',
-    impactSize: 'lg',
-    chips: ['Automatización', 'C#', 'WinForms', 'Flujos de ingeniería'],
-    visual: {
-      type: 'compare',
-      beforeLabel: 'ANTES · MANUAL',
-      afterLabel: 'AHORA · AUTOMÁTICO',
-      beforeValue: '3 min',
-      afterValue: '2.17 s',
-      caption: 'TIEMPO POR PLANO',
-    },
-  },
   {
     id: 'gases',
     tabLabel: 'Sistema IoT de monitoreo de gases',
@@ -47,6 +29,10 @@ export const projects: Project[] = [
     impact: 'Supervisión remota e historial centralizado para apoyar la seguridad operativa.',
     impactSize: 'md',
     chips: ['IoT', 'C++', 'MQTT', 'Integración industrial'],
+    screenshot: {
+      src: '/assets/gases_project.jpeg',
+      alt: 'Panel de monitoreo en tiempo real con el estado de los sensores de gases',
+    },
     visual: {
       type: 'pipeline',
       steps: [
@@ -56,6 +42,30 @@ export const projects: Project[] = [
         { label: 'Panel de supervisión', active: true },
       ],
       statusLabel: 'MONITOREO ACTIVO',
+    },
+  },
+  {
+    id: 'planos',
+    tabLabel: 'Automatización de planos',
+    category: 'INGENIERÍA Y PROYECTOS',
+    title: 'De 3 minutos a 2.17 segundos por plano.',
+    reto: 'El llenado manual de membretes generaba un cuello de botella durante la preparación de entregables de ingeniería.',
+    solucion:
+      'Se desarrolló un complemento que automatiza la gestión y el llenado de información en los planos, manteniendo la estructura requerida por el equipo.',
+    impact: '97.5% menos tiempo por plano.',
+    impactSize: 'lg',
+    chips: ['Automatización', 'C#', 'WinForms', 'Flujos de ingeniería'],
+    screenshot: {
+      src: '/assets/plugin_project.jpeg',
+      alt: 'Herramienta Title Block Batch Update procesando el llenado automático de membretes en lote',
+    },
+    visual: {
+      type: 'compare',
+      beforeLabel: 'ANTES · MANUAL',
+      afterLabel: 'AHORA · AUTOMÁTICO',
+      beforeValue: '3 min',
+      afterValue: '2.17 s',
+      caption: 'TIEMPO POR PLANO',
     },
   },
   {
