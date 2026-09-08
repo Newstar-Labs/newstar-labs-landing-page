@@ -6,7 +6,7 @@ export const site = {
   locale: 'es',
   url: 'https://newstarlabs.pe',
   email: 'newstarlabs@gmail.com',
-  whatsappNumber: '51944029240',
+  whatsappNumber: '51991127593',
   whatsappMessage:
     'Hola, vi la página de Newstar Labs y me gustaría mejorar los procesos de mi empresa. ¿Podemos conversar?',
   location: 'Lima, Perú · Atención remota',

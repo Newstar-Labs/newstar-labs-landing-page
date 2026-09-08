@@ -1,0 +1,840 @@
+---
+import { site, whatsappHref, mailHref } from '../data/site';
+
+const phoneDigits = site.whatsappNumber.replace(/[^0-9]/g, '');
+const countryCode = phoneDigits.slice(0, 2);
+const localDigits = phoneDigits.slice(2);
+const formattedPhone = `+${countryCode} ${localDigits.slice(0, 3)} ${localDigits.slice(3, 6)} ${localDigits.slice(6)}`;
+
+const bullets = [
+  'Respondemos en menos de 24 horas.',
+  'Sesión remota, sin costo y sin compromiso.',
+  'Sales con un diagnóstico y siguientes pasos claros.',
+];
+
+const sectors = [
+  'Logística y transporte',
+  'Industria y minería',
+  'Retail y comercio',
+  'Servicios profesionales',
+  'Salud',
+  'Construcción',
+  'Educación',
+  'Otro',
+];
+
+const teamSizes = ['1–10', '11–50', '51–200', 'Más de 200 personas'];
+
+const schedules = ['Mañana 9:00–12:00', 'Tarde 12:00–18:00', 'Flexible'];
+---
+
+<section id="agenda" class="ns-agenda">
+  <div class="ns-agenda-grid">
+    <div class="ns-agenda-left">
+      <div class="ns-agenda-eyebrow">
+        <span class="ns-dot"></span>
+        <span class="ns-eyebrow-text">Agenda una sesión</span>
+      </div>
+      <h2 class="ns-agenda-title">Agendemos 30 minutos y revisemos tu proceso</h2>
+      <p class="ns-agenda-lead">
+        Cuéntanos cómo opera tu empresa hoy y en la sesión te mostramos qué se puede automatizar, en qué orden y con
+        qué esfuerzo real.
+      </p>
+
+      <ul class="ns-agenda-bullets">
+        {
+          bullets.map((bullet) => (
+            <li>
+              <span class="ns-agenda-bicon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+              </span>
+              <span>{bullet}</span>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="ns-agenda-contacts">
+        <a href={mailHref} class="ns-agenda-crow" aria-label={`Enviar un correo a Newstar Labs a ${site.email}`}>
+          <span class="ns-agenda-ctile ns-agenda-ctile-mail">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+              <path d="m4 7 8 6 8-6"></path>
+            </svg>
+          </span>
+          <span class="ns-agenda-cinfo">
+            <span class="ns-agenda-clabel">CORREO</span>
+            <span class="ns-agenda-cvalue">{site.email}</span>
+          </span>
+        </a>
+
+        <a
+          href={whatsappHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="ns-agenda-crow"
+          aria-label={`Escribir a Newstar Labs por WhatsApp al ${formattedPhone}`}
+        >
+          <span class="ns-agenda-ctile ns-agenda-ctile-wa">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.5 8.5 0 0 1-3.9-.9L3 21l1.9-5A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5Z"></path>
+            </svg>
+          </span>
+          <span class="ns-agenda-cinfo">
+            <span class="ns-agenda-clabel">WHATSAPP</span>
+            <span class="ns-agenda-cvalue">{formattedPhone}</span>
+          </span>
+        </a>
+      </div>
+    </div>
+
+    <div class="ns-agenda-card" id="ns-agenda-card">
+      <div class="ns-agenda-glow" data-pause-offscreen></div>
+
+      <form class="ns-agenda-form" id="ns-agenda-form" novalidate>
+        <div class="ns-agenda-row">
+          <div class="ns-agenda-field">
+            <label for="ns-empresa">Empresa <span class="ns-agenda-req">*</span></label>
+            <input id="ns-empresa" name="empresa" type="text" class="ns-field" placeholder="Nombre de tu empresa" autocomplete="organization" />
+          </div>
+          <div class="ns-agenda-field">
+            <label for="ns-contacto">Contacto <span class="ns-agenda-req">*</span></label>
+            <input id="ns-contacto" name="contacto" type="text" class="ns-field" placeholder="Tu nombre" autocomplete="name" />
+          </div>
+        </div>
+
+        <div class="ns-agenda-row">
+          <div class="ns-agenda-field">
+            <label for="ns-cargo">Cargo</label>
+            <input id="ns-cargo" name="cargo" type="text" class="ns-field" placeholder="Gerente de operaciones" autocomplete="organization-title" />
+          </div>
+          <div class="ns-agenda-field">
+            <label for="ns-sector">Sector</label>
+            <select id="ns-sector" name="sector" class="ns-field ns-field-select">
+              <option value="">Selecciona (opcional)</option>
+              {sectors.map((sector) => <option value={sector}>{sector}</option>)}
+            </select>
+          </div>
+        </div>
+
+        <div class="ns-agenda-row">
+          <div class="ns-agenda-field">
+            <label for="ns-correo">Correo corporativo <span class="ns-agenda-req">*</span></label>
+            <input id="ns-correo" name="correo" type="email" class="ns-field" placeholder="nombre@empresa.com" autocomplete="email" />
+          </div>
+          <div class="ns-agenda-field">
+            <label for="ns-telefono">WhatsApp o teléfono</label>
+            <input id="ns-telefono" name="telefono" type="tel" class="ns-field" placeholder="+51 999 999 999" autocomplete="tel" />
+          </div>
+        </div>
+
+        <div class="ns-agenda-row">
+          <div class="ns-agenda-field">
+            <label for="ns-tamano">Tamaño del equipo</label>
+            <select id="ns-tamano" name="tamano" class="ns-field ns-field-select">
+              <option value="">Selecciona (opcional)</option>
+              {teamSizes.map((size) => <option value={size}>{size}</option>)}
+            </select>
+          </div>
+          <div class="ns-agenda-field">
+            <label for="ns-horario">Horario preferido</label>
+            <select id="ns-horario" name="horario" class="ns-field ns-field-select">
+              <option value="">Selecciona (opcional)</option>
+              {schedules.map((schedule) => <option value={schedule}>{schedule}</option>)}
+            </select>
+          </div>
+        </div>
+
+        <div class="ns-agenda-field">
+          <label for="ns-proceso">¿Qué proceso quieres agilizar? <span class="ns-agenda-req">*</span></label>
+          <textarea
+            id="ns-proceso"
+            name="proceso"
+            class="ns-field ns-agenda-textarea"
+            rows="4"
+            placeholder="Ej. emitimos guías y órdenes a mano en Excel y coordinamos todo por WhatsApp."></textarea>
+        </div>
+
+        <div class="ns-agenda-error" id="ns-agenda-error" role="alert" hidden>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"></circle>
+            <path d="M12 8v4"></path>
+            <path d="M12 16h.01"></path>
+          </svg>
+          <span id="ns-agenda-error-text"></span>
+        </div>
+
+        <button type="submit" class="ns-agenda-submit">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="16" rx="2"></rect>
+            <path d="M16 3v4"></path>
+            <path d="M8 3v4"></path>
+            <path d="M3 10h18"></path>
+          </svg>
+          <span>Solicitar mi sesión</span>
+          <span class="ns-agenda-submit-arrow">›</span>
+        </button>
+
+        <p class="ns-agenda-note">Al enviar se abre tu correo con la solicitud lista. Usamos tus datos solo para coordinar la sesión.</p>
+      </form>
+
+      <div class="ns-agenda-success" id="ns-agenda-success" hidden>
+        <div class="ns-agenda-successtile">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 6 9 17l-5-5"></path>
+          </svg>
+        </div>
+        <h3>Tu solicitud está lista</h3>
+        <p>Se abrió tu correo con la solicitud lista para enviar. Confirmamos tu sesión en menos de 24 horas.</p>
+        <div class="ns-agenda-successbtns">
+          <a href={whatsappHref} target="_blank" rel="noopener noreferrer" class="ns-agenda-wabtn" aria-label="Escribir a Newstar Labs por WhatsApp">
+            Escribir por WhatsApp
+          </a>
+          <button type="button" class="ns-agenda-resetbtn" id="ns-agenda-reset">Enviar otra solicitud</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ contactEmail: site.email }}>
+  const section = document.getElementById('agenda');
+  const form = document.getElementById('ns-agenda-form');
+  const successPanel = document.getElementById('ns-agenda-success');
+  const errorBox = document.getElementById('ns-agenda-error');
+  const errorText = document.getElementById('ns-agenda-error-text');
+  const resetBtn = document.getElementById('ns-agenda-reset');
+
+  // Entrada suave al hacer scroll, coherente con el resto de la landing.
+  // Respeta prefers-reduced-motion vía la regla global en global.css, que
+  // reduce todas las duraciones de transición a ~0.
+  if (section) {
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        (entries, observer) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              section.classList.add('ns-agenda-inview');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.15, rootMargin: '-80px 0px' },
+      );
+      io.observe(section);
+    } else {
+      section.classList.add('ns-agenda-inview');
+    }
+  }
+
+  if (form && successPanel && errorBox && errorText) {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+    const fields = {
+      empresa: document.getElementById('ns-empresa'),
+      contacto: document.getElementById('ns-contacto'),
+      cargo: document.getElementById('ns-cargo'),
+      sector: document.getElementById('ns-sector'),
+      correo: document.getElementById('ns-correo'),
+      telefono: document.getElementById('ns-telefono'),
+      tamano: document.getElementById('ns-tamano'),
+      horario: document.getElementById('ns-horario'),
+      proceso: document.getElementById('ns-proceso'),
+    };
+
+    const clearError = () => {
+      errorBox.hidden = true;
+      errorText.textContent = '';
+      Object.values(fields).forEach((el) => el && el.removeAttribute('aria-invalid'));
+    };
+
+    const showError = (message, invalidKeys) => {
+      errorText.textContent = message;
+      errorBox.hidden = false;
+      invalidKeys.forEach((key) => fields[key] && fields[key].setAttribute('aria-invalid', 'true'));
+    };
+
+    Object.values(fields).forEach((el) => {
+      if (!el) return;
+      el.addEventListener('input', clearError);
+      el.addEventListener('change', clearError);
+    });
+
+    const buildMailto = () => {
+      const empresa = fields.empresa.value.trim();
+      const contacto = fields.contacto.value.trim();
+      const cargo = fields.cargo.value.trim();
+      const sector = fields.sector.value || 'Por definir';
+      const correo = fields.correo.value.trim();
+      const telefono = fields.telefono.value.trim();
+      const tamano = fields.tamano.value || 'Por definir';
+      const horario = fields.horario.value || 'Por definir';
+      const proceso = fields.proceso.value.trim();
+
+      const contactoLine = cargo ? `${contacto} (${cargo})` : contacto;
+
+      const subject = `Solicitud de sesión · ${empresa}`;
+      const body = [
+        'Hola equipo Newstar Labs,',
+        '',
+        'Nos gustaría agendar una sesión para revisar nuestro proceso.',
+        '',
+        `Empresa: ${empresa}`,
+        `Contacto: ${contactoLine}`,
+        `Sector: ${sector}`,
+        `Tamaño del equipo: ${tamano}`,
+        `Correo: ${correo || '—'}`,
+        `WhatsApp / teléfono: ${telefono || '—'}`,
+        `Horario preferido: ${horario}`,
+        '',
+        'Proceso que queremos agilizar:',
+        proceso,
+        '',
+        'Quedamos atentos a la confirmación de la sesión.',
+        '',
+        contacto,
+      ].join('\r\n');
+
+      return `mailto:${contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    };
+
+    const resetToInitial = () => {
+      form.reset();
+      clearError();
+      form.hidden = false;
+      successPanel.hidden = true;
+    };
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const empresa = fields.empresa.value.trim();
+      const contacto = fields.contacto.value.trim();
+      const correo = fields.correo.value.trim();
+      const telefono = fields.telefono.value.trim();
+      const proceso = fields.proceso.value.trim();
+
+      if (!empresa || !contacto) {
+        const invalid = [];
+        if (!empresa) invalid.push('empresa');
+        if (!contacto) invalid.push('contacto');
+        showError('Cuéntanos el nombre de tu empresa y tu nombre para poder coordinar.', invalid);
+        return;
+      }
+
+      if (!correo && !telefono) {
+        showError('Déjanos un correo corporativo o un WhatsApp para responderte.', ['correo', 'telefono']);
+        return;
+      }
+
+      if (correo && !emailPattern.test(correo)) {
+        showError('Revisa el formato del correo (ejemplo: nombre@empresa.com).', ['correo']);
+        return;
+      }
+
+      if (proceso.length < 12) {
+        showError('Describe en una línea el proceso que quieres agilizar.', ['proceso']);
+        return;
+      }
+
+      clearError();
+
+      // TODO: reemplazar por POST al backend cuando exista el endpoint.
+      window.location.href = buildMailto();
+
+      form.hidden = true;
+      successPanel.hidden = false;
+    });
+
+    resetBtn && resetBtn.addEventListener('click', resetToInitial);
+  }
+</script>
+
+<style>
+  .ns-agenda {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    padding: 104px 24px 128px;
+  }
+
+  .ns-agenda-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    gap: 64px;
+    align-items: start;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .ns-agenda-inview .ns-agenda-grid {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ---------- Left column ---------- */
+
+  .ns-agenda-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .ns-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--color-emerald);
+  }
+
+  .ns-eyebrow-text {
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(var(--color-text-primary-rgb), 0.5);
+  }
+
+  .ns-agenda-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(31px, 4.6vw, 46px);
+    letter-spacing: -0.032em;
+    line-height: 1.08;
+    max-width: 24rem;
+    margin: 14px 0 0;
+    color: var(--color-text-primary);
+    text-wrap: balance;
+  }
+
+  .ns-agenda-lead {
+    margin: 18px 0 0;
+    font-size: 17px;
+    line-height: 1.6;
+    max-width: 30rem;
+    color: var(--color-text-secondary);
+    text-wrap: pretty;
+  }
+
+  .ns-agenda-bullets {
+    list-style: none;
+    margin: 28px 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .ns-agenda-bullets li {
+    display: grid;
+    grid-template-columns: 18px 1fr;
+    gap: 10px;
+    align-items: start;
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: rgba(var(--color-text-primary-rgb), 0.6);
+  }
+
+  .ns-agenda-bicon {
+    color: var(--color-emerald);
+    margin-top: 1px;
+  }
+
+  .ns-agenda-contacts {
+    margin-top: 38px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .ns-agenda-crow {
+    display: grid;
+    grid-template-columns: 46px 1fr;
+    gap: 14px;
+    align-items: center;
+    padding: 8px;
+    border-radius: 16px;
+    transition: background 0.25s ease-out;
+  }
+
+  .ns-agenda-crow:hover {
+    background: rgba(var(--color-text-primary-rgb), 0.03);
+  }
+
+  .ns-agenda-ctile {
+    width: 46px;
+    height: 46px;
+    flex: none;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ns-agenda-ctile-mail {
+    background: rgba(var(--color-violet-rgb), 0.1);
+    border: 1px solid rgba(var(--color-violet-rgb), 0.3);
+    color: var(--color-violet);
+  }
+
+  .ns-agenda-ctile-wa {
+    background: rgba(var(--color-emerald-rgb), 0.1);
+    border: 1px solid rgba(var(--color-emerald-rgb), 0.3);
+    color: var(--color-emerald);
+  }
+
+  .ns-agenda-cinfo {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .ns-agenda-clabel {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    color: rgba(var(--color-text-primary-rgb), 0.4);
+  }
+
+  .ns-agenda-cvalue {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    overflow-wrap: anywhere;
+  }
+
+  /* ---------- Right column: card ---------- */
+
+  .ns-agenda-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 26px;
+    padding: 40px;
+    background: rgba(var(--color-text-primary-rgb), 0.025);
+    box-shadow: inset 0 1px 1px rgba(var(--color-text-primary-rgb), 0.08);
+  }
+
+  .ns-agenda-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.2px;
+    background: linear-gradient(
+      135deg,
+      rgba(var(--color-text-primary-rgb), 0.3),
+      rgba(var(--color-text-primary-rgb), 0) 50%,
+      rgba(var(--color-text-primary-rgb), 0.1)
+    );
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  .ns-agenda-glow {
+    position: absolute;
+    left: 70%;
+    top: -10%;
+    width: 80%;
+    height: 60%;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      rgba(var(--color-emerald-rgb), 0.16),
+      rgba(var(--color-violet-rgb), 0.12) 45%,
+      rgba(var(--color-bg-rgb), 0) 70%
+    );
+    animation: ns-breathe 12s ease-in-out infinite;
+    will-change: transform, opacity;
+    contain: paint;
+    pointer-events: none;
+  }
+
+  .ns-agenda-form,
+  .ns-agenda-success {
+    position: relative;
+    z-index: 1;
+  }
+
+  .ns-agenda-form[hidden] {
+    display: none;
+  }
+
+  .ns-agenda-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .ns-agenda-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  @media (min-width: 641px) {
+    .ns-agenda-row {
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+  }
+
+  .ns-agenda-field {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ns-agenda-field label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 12.5px;
+    color: rgba(var(--color-text-primary-rgb), 0.6);
+  }
+
+  .ns-agenda-req {
+    color: var(--color-emerald);
+  }
+
+  .ns-field {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 50px;
+    background: rgba(var(--color-text-primary-rgb), 0.03);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-family: inherit;
+    font-size: 15px;
+    color: var(--color-text-primary);
+    transition: border-color 0.25s ease-out, box-shadow 0.25s ease-out, background 0.25s ease-out;
+  }
+
+  .ns-field::placeholder {
+    color: rgba(var(--color-text-primary-rgb), 0.3);
+  }
+
+  .ns-field:hover {
+    border-color: rgba(var(--color-text-primary-rgb), 0.3);
+  }
+
+  .ns-field:focus {
+    outline: none;
+    border-color: var(--color-violet);
+    box-shadow: 0 0 0 3px rgba(var(--color-violet-rgb), 0.2);
+    background: rgba(var(--color-text-primary-rgb), 0.05);
+  }
+
+  .ns-field[aria-invalid='true'] {
+    border-color: #f0a9a9;
+  }
+
+  .ns-field-select {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 38px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23B8B3B0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 14px;
+  }
+
+  .ns-field-select option {
+    background: #0b0b10;
+    color: var(--color-text-primary);
+  }
+
+  .ns-agenda-textarea {
+    min-height: 110px;
+    line-height: 1.5;
+    resize: vertical;
+  }
+
+  .ns-agenda-error[hidden] {
+    display: none;
+  }
+
+  .ns-agenda-error {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: rgba(240, 169, 169, 0.08);
+    border: 1px solid rgba(240, 169, 169, 0.25);
+    color: #f0a9a9;
+    font-size: 13.5px;
+    line-height: 1.4;
+  }
+
+  .ns-agenda-error svg {
+    flex: none;
+    margin-top: 2px;
+  }
+
+  .ns-agenda-submit {
+    width: 100%;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 999px;
+    background: var(--color-emerald);
+    color: var(--color-bg);
+    font-weight: 600;
+    font-size: 16px;
+    transition: background 0.25s ease-out, transform 0.25s ease-out, box-shadow 0.25s ease-out;
+  }
+
+  .ns-agenda-submit:hover {
+    background: var(--color-emerald-strong);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(var(--color-emerald-rgb), 0.22);
+  }
+
+  .ns-agenda-submit:active {
+    transform: scale(0.99);
+  }
+
+  .ns-agenda-submit:focus-visible {
+    outline: 2px solid var(--color-violet);
+    outline-offset: 3px;
+  }
+
+  .ns-agenda-submit-arrow {
+    font-size: 18px;
+  }
+
+  .ns-agenda-note {
+    margin: 0;
+    text-align: center;
+    font-size: 12.5px;
+    color: rgba(var(--color-text-primary-rgb), 0.4);
+  }
+
+  /* ---------- Success state ---------- */
+
+  .ns-agenda-successtile {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(var(--color-emerald-rgb), 0.12);
+    border: 1px solid rgba(var(--color-emerald-rgb), 0.3);
+    color: var(--color-emerald);
+  }
+
+  .ns-agenda-success h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 23px;
+    margin: 20px 0 0;
+    color: var(--color-text-primary);
+  }
+
+  .ns-agenda-success p {
+    margin: 12px 0 0;
+    font-size: 15.5px;
+    line-height: 1.6;
+    max-width: 30rem;
+    color: var(--color-text-secondary);
+    text-wrap: pretty;
+  }
+
+  .ns-agenda-successbtns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 26px;
+  }
+
+  .ns-agenda-wabtn,
+  .ns-agenda-resetbtn {
+    min-height: 50px;
+    padding: 0 22px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14.5px;
+    font-weight: 600;
+    transition: background 0.25s ease-out, border-color 0.25s ease-out, transform 0.25s ease-out;
+  }
+
+  .ns-agenda-wabtn {
+    background: var(--color-emerald);
+    color: var(--color-bg);
+  }
+
+  .ns-agenda-wabtn:hover {
+    background: var(--color-emerald-strong);
+    transform: translateY(-2px);
+  }
+
+  .ns-agenda-resetbtn {
+    background: transparent;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-primary);
+  }
+
+  .ns-agenda-resetbtn:hover {
+    border-color: rgba(var(--color-text-primary-rgb), 0.4);
+  }
+
+  /* ---------- Responsive ---------- */
+
+  @media (max-width: 1020px) {
+    .ns-agenda-grid {
+      grid-template-columns: 1fr;
+      gap: 44px;
+    }
+
+    .ns-agenda-card {
+      padding: 34px 30px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .ns-agenda {
+      padding-top: clamp(24px, 5vw, 40px);
+      padding-bottom: clamp(88px, 12vw, 112px);
+      padding-left: max(22px, env(safe-area-inset-left));
+      padding-right: max(22px, env(safe-area-inset-right));
+    }
+
+    .ns-agenda-grid {
+      gap: 36px;
+    }
+
+    .ns-agenda-title {
+      font-size: clamp(30px, 8.4vw, 38px);
+      max-width: 100%;
+    }
+
+    .ns-agenda-lead {
+      font-size: 16.5px;
+    }
+
+    .ns-agenda-card {
+      border-radius: 22px;
+      padding: 26px 20px;
+    }
+
+    .ns-agenda-form {
+      gap: 16px;
+    }
+
+    .ns-agenda-contacts {
+      margin-top: 30px;
+    }
+
+    .ns-agenda-cvalue {
+      font-size: 14.5px;
+    }
+  }
+</style>
